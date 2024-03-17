@@ -49,58 +49,46 @@ class ApiComicService implements ApiComicsInterface
         $this->cache = $cache;
     }
 
-    public function getAllComics($limit = 21, $offset = 0)
+    public function getAllComics($limit = null, $offset = null)
     {
-        $cacheKey = 'comics1_' . $limit . '_' . $offset;
+        $url = $this->apiBaseUrl . 'comics' . $this->apiKey;
+    
+        if ($limit !== null && $offset !== null) {
+            $url .= '&limit=' . $limit . '&offset=' . $offset;
+        }
+    
+        return $this->fetchComics($url);
+    }
+    
+    private function fetchComics($url)
+    {
+        $cacheKey = md5($url);
         $cacheItem = $this->cache->getItem($cacheKey);
-
+    
         if (!$cacheItem->isHit()) {
-            $url = $this->apiBaseUrl . 'comics'. $this->apiKey . '&limit=' . $limit . '&offset=' . $offset;
-
             $response = Http::get($url);
-
+    
             // Verificar se a resposta da API está no formato esperado
             if (!$response->successful()) {
                 throw new \RuntimeException('Erro ao obter quadrinhos da API da Marvel.');
             }
-
+    
             $responseData = $response->json();
-
+    
             if (!isset($responseData['data']['results'])) {
                 throw new \RuntimeException('Resposta da API da Marvel não contém resultados de quadrinhos.');
             }
-
+    
             $comics = $responseData['data'];
-
+    
             $cacheItem->set($comics);
             $cacheItem->expiresAfter(3600); // Tempo de vida do cache: 1 hora
             $this->cache->save($cacheItem);
         } else {
             $comics = $cacheItem->get();
         }
-
+    
         return $this->mapComics($comics);
-    }
-
-    public function getComicById($comicId)
-    {
-        $response = Http::get($this->apiBaseUrl . 'comics/' . $comicId, [
-            'apikey' => $this->apiKey
-        ]);
-
-        if (!$response->successful()) {
-            throw new \RuntimeException('Erro ao obter quadrinho da API da Marvel.');
-        }
-
-        $responseData = $response->json();
-
-        if (!isset($responseData['data']['results']) || empty($responseData['data']['results'])) {
-            throw new \RuntimeException('Quadrinho não encontrado.');
-        }
-
-        $comic = $responseData['data']['results'][0];
-
-        return $this->mapComic($comic);
     }
 
     protected function mapComic($comic)

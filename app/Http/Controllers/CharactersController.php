@@ -14,7 +14,7 @@ class CharactersController extends Controller
 {
     use PaginationTrait;
 
-    const REGISTROS_PAGINA = 21;
+    const REGISTROS_PAGINA = 20;
 
     protected $charactersService;
 

@@ -2,7 +2,27 @@
     <AppLayout>
         <div class="q-pa-md">
             <h3>Favoritos</h3>
-            <div class="q-gutter-y-md" style="max-width: 600px"></div>
+            <h4>Quadrinhos</h4>
+            <div class="q-gutter-y-md" style="max-width: 600px">
+                <div class="comic-container">
+                    <div class="comic" v-for="comic in favoriteComics">
+                        <img class="imagem" :src="comic.image" />
+                        <span>{{ comic.title }}</span>
+                    </div>
+                </div>
+            </div>
+            <h4>Personagens</h4>
+            <div class="q-gutter-y-md" style="max-width: 600px">
+                <div class="character-container">
+                    <div
+                        class="character"
+                        v-for="character in favoriteCharacters"
+                    >
+                        <img class="imagem" :src="character.image" />
+                        <span>{{ character.name }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </AppLayout>
 </template>
@@ -17,9 +37,23 @@ export default {
     components: {
         AppLayout,
     },
-    props: ["comics", "page"],
+    props: ["favoriteComics", "favoriteCharacters"],
     setup() {
         return {};
     },
 };
 </script>
+
+<style>
+.comic-container,
+.character-container {
+    display: flex;
+    gap: 20px;
+}
+
+.comic .imagem,
+.character .imagem {
+    display: flex;
+    width: 100px;
+}
+</style>
