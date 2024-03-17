@@ -24,7 +24,6 @@ class ComicsController extends Controller
             $currentPage = $request->input('page') ?? 1;
 
             $comics = $this->comicService->getAllComics($this->limit(), $this->offset($currentPage, self::REGISTROS_PAGINA));
-
             return Inertia::render("Comics", [
                 'comics' => $comics["dados"], 
                 'totalPages' => $this->totalPages($comics["total"], self::REGISTROS_PAGINA), 
