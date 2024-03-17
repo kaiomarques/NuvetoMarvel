@@ -34,16 +34,9 @@ class FavoritesController extends Controller
         $comics = $this->comicService->getAllComics();
         $characters = $this->charactersService->getAllCharacters();
 
-        $favoriteComicsData = 
-            array_filter($comics["dados"], function($comic) use ($favoriteComics) {
-                return in_array($comic['id'], $favoriteComics);
-            });
+        $favoriteComicsData = $this->filterFavorites($comics['dados'], $favoriteComics);
 
-        $favoriteCharactersData = 
-            array_filter($characters["dados"], function($character) use ($favoriteCharacters) {
-                return in_array($character['id'], $favoriteCharacters);
-            });
-
+        $favoriteCharactersData = $this->filterFavorites($characters['dados'], $favoriteCharacters);
 
         return Inertia::render("Favorites", 
             [
@@ -51,5 +44,11 @@ class FavoritesController extends Controller
                 "favoriteCharacters" => $favoriteCharactersData
             ]
         );
+    }
+
+    private function filterFavorites($data, $favoriteIds) {
+        return array_filter($data, function ($item) use ($favoriteIds) {
+            return in_array($item['id'], $favoriteIds);
+        });
     }
 }
