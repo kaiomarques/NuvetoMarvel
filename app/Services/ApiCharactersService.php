@@ -6,9 +6,9 @@ use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\Cache\Adapter\Psr16Adapter;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
-use App\Models\FavoriteComics;
+use App\Models\FavoriteCharacters;
 
-class ApiComicService implements ApiComicsInterface
+class ApiCharactersService implements ApiCharactersInterface
 {
     protected $apiBaseUrl;
     protected $apiKey;
@@ -49,42 +49,41 @@ class ApiComicService implements ApiComicsInterface
         $this->cache = $cache;
     }
 
-    public function getAllComics($limit = 21, $offset = 0)
+    public function getAllCharacters($limit = 21, $offset = 0)
     {
-        $cacheKey = 'comics_' . $limit . '_' . $offset;
+        $cacheKey = 'character_' . $limit . '_' . $offset;
         $cacheItem = $this->cache->getItem($cacheKey);
 
         if (!$cacheItem->isHit()) {
-            $url = $this->apiBaseUrl . 'comics'. $this->apiKey . '&limit=' . $limit . '&offset=' . $offset;
-
+            $url = $this->apiBaseUrl . 'characters'. $this->apiKey . '&limit=' . $limit . '&offset=' . $offset;
             $response = Http::get($url);
 
             // Verificar se a resposta da API está no formato esperado
             if (!$response->successful()) {
-                throw new \RuntimeException('Erro ao obter quadrinhos da API da Marvel.');
+                throw new \RuntimeException('Erro ao obter personagens da API da Marvel.');
             }
 
             $responseData = $response->json();
 
             if (!isset($responseData['data']['results'])) {
-                throw new \RuntimeException('Resposta da API da Marvel não contém resultados de quadrinhos.');
+                throw new \RuntimeException('Resposta da API da Marvel não contém resultados de personagens.');
             }
 
-            $comics = $responseData['data']['results'];
+            $characters = $responseData['data']['results'];
 
-            $cacheItem->set($comics);
+            $cacheItem->set($characters);
             $cacheItem->expiresAfter(3600); // Tempo de vida do cache: 1 hora
             $this->cache->save($cacheItem);
         } else {
-            $comics = $cacheItem->get();
+            $characters = $cacheItem->get();
         }
 
-        return $this->mapComics($comics);
+        return $this->mapCharacters($characters);
     }
 
-    public function getComicById($comicId)
+    public function getCharacterById($characterId)
     {
-        $response = Http::get($this->apiBaseUrl . 'comics/' . $comicId, [
+        $response = Http::get($this->apiBaseUrl . 'comics/' . $characterId, [
             'apikey' => $this->apiKey
         ]);
 
@@ -98,47 +97,37 @@ class ApiComicService implements ApiComicsInterface
             throw new \RuntimeException('Quadrinho não encontrado.');
         }
 
-        $comic = $responseData['data']['results'][0];
+        $character = $responseData['data']['results'][0];
 
-        return $this->mapComic($comic);
+        return $this->mapComic($character);
     }
 
-    protected function mapComic($comic)
+    protected function mapCharacter($character)
     {
         return [
-            'id'          => $comic['id'],
-            'title'       => $comic['title'],
-            'image'       => $this->urlImage($comic),
-            'creators'    => $this->creators($comic),
-            'like'        => $this->getLike($comic)
+            'id'          => $character['id'],
+            'name'       => $character['name'],
+            'image'       => $this->urlImage($character),
+            'like'        => $this->getLike($character)
         ];
     }
 
-    private function getLike($comic) {
+    private function getLike($character) {
         if (!Auth::check()) 
             return false;
 
-        $like = FavoriteComics::where(['id_comic' => $comic["id"], "id_usuario" => Auth::user()->id])->exists();
+        $like = FavoriteCharacters::where(['id_character' => $character["id"], "id_usuario" => Auth::user()->id])->exists();
         return ($like) ? true : false;
     }
 
-    protected function mapComics($comics)
+    protected function mapCharacters($characters)
     {
-        return array_map(function ($comic) {
-            return $this->mapComic($comic);
-        }, $comics);
+        return array_map(function ($character) {
+            return $this->mapCharacter($character);
+        }, $characters);
     }
 
-    private function urlImage($comic) {
-      return $comic['thumbnail']['path'].'/'.self::IMAGE_SIZE.'.'.$comic['thumbnail']['extension'];
-    }
-
-    private function creators($comic) {
-      $nomes = 'Autor não cadastrado';
-      if(isset($comic["creators"]["items"]) && is_array($comic["creators"]["items"]) && count($comic["creators"]["items"]) > 0) {
-        $nomes = array_column(array_slice($comic["creators"]['items'], 0, 2), 'name');
-        $nomes = implode(', ', $nomes);
-      }
-      return $nomes;
+    private function urlImage($character) {
+      return $character['thumbnail']['path'].'/'.self::IMAGE_SIZE.'.'.$character['thumbnail']['extension'];
     }
 }

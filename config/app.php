@@ -69,6 +69,11 @@ return [
     'api_public_key' => env('API_PUBLIC_KEY',''),
     'api_private_key' => env('API_PRIVATE_KEY',''),
 
+
+
+    'google_client_id' => env('GOOGLE_CLIENT_ID',''),
+    'google_client_secret' => env('GOOGLE_CLIENT_SECRET',''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

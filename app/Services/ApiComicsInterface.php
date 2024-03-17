@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-interface ApiComicInterface
+interface ApiComicsInterface
 {
     public function getAllComics();
     public function getComicById(int $id);

@@ -14,9 +14,19 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia('Home');
-});
 
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
-Route::get('/comics', [App\Http\Controllers\ComicsController::class, 'index'])->name('home');
+Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+Route::get('/googleAuth', [App\Http\Controllers\LoginController::class, 'googleAuth'])->name('googleAuth');
+
+Route::get('/register', [App\Http\Controllers\UserController::class, 'register'])->name("register");
+Route::post('/register/store', [App\Http\Controllers\UserController::class, 'store']);
+
+Route::get('/comics', [App\Http\Controllers\ComicsController::class, 'index']);
+Route::get('/comics/{id_comic}/like', [App\Http\Controllers\LikeComicController::class, 'toggle']);
+
+Route::get('/characters', [App\Http\Controllers\CharactersController::class, 'index']);
+Route::get('/characters/{id_character}/like', [App\Http\Controllers\LikeCharacterController::class, 'toggle']);
+
+Route::get('/favorites', [App\Http\Controllers\FavoritesController::class, 'index']);

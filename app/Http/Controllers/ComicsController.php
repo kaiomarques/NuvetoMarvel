@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Services\ApiComicService;
+use Session;
 
 class ComicsController extends Controller
 {
