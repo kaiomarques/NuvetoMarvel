@@ -2,33 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Services\ApiComicService;
-use Session;
+use App\Library\PaginationTrait;
 
 class ComicsController extends Controller
 {
+    use PaginationTrait;
+
     protected $comicService;
 
-    private $urlAutenticada = '';
+    const REGISTROS_PAGINA = 21;
 
     function __construct(ApiComicService $comicService) {
         $this->comicService = $comicService;
     }
 
     public function index(Request $request) {
-        $page = $request->input('page') ?? 1;
-        $limit = 21;
-        $offset = ($page - 1) * $limit;
-
         try {
-            $comics = $this->comicService->getAllComics($limit, $offset);
-            return Inertia::render("Comics", ['comics' => $comics, 'page' => $page] );
+            $currentPage = $request->input('page') ?? 1;
+
+            $comics = $this->comicService->getAllComics($this->limit(), $this->offset($currentPage, self::REGISTROS_PAGINA));
+
+            return Inertia::render("Comics", [
+                'comics' => $comics["dados"], 
+                'totalPages' => $this->totalPages($comics["total"], self::REGISTROS_PAGINA), 
+                'currentPage' => $currentPage] );
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao buscar quadrinhos: ' . $e->getMessage()], 500);
         }
+    }
+
+    private function limit() {
+        return self::REGISTROS_PAGINA;
     }
 }

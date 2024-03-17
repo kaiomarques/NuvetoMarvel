@@ -83,15 +83,17 @@
         <!------------------------------ -->
         <!------------------------------ -->
         <!------------------------------ -->
-        <div class="q-pa-lg">
-            <div class="q-gutter-md">
-                <q-pagination
-                    v-model="current"
-                    :max="5"
-                    direction-links
-                    @click="changePage"
-                />
-            </div>
+        <div class="q-pa-lg flex flex-center">
+            <q-pagination
+                v-model="current"
+                :max="totalPages"
+                :max-pages="5"
+                :ellipses="false"
+                :boundary-numbers="false"
+                direction-links
+                boundary-links
+                @click="changePage"
+            />
         </div>
         <!------------------------------ -->
         <!------------------------------ -->
@@ -120,16 +122,11 @@ export default {
             );
         },
     },
-    props: ["characters", "page"],
+    props: ["characters", "currentPage", "totalPages"],
     setup(props) {
-        const leftDrawerOpen = ref(false);
-        const current = ref(parseInt(props.page)); // Definindo a variável current com o valor de props.page
+        const current = ref(parseInt(props.currentPage)); // Definindo a variável current com o valor de props.page
 
-        //console.log(props.page);
-
-        const toggleLeftDrawer = () => {
-            leftDrawerOpen.value = !leftDrawerOpen.value;
-        };
+        console.log("-----------------------", props.totalPages);
 
         const changePage = () => {
             window.location.href = "characters?page=" + current.value;
@@ -137,8 +134,6 @@ export default {
 
         return {
             current,
-            leftDrawerOpen,
-            toggleLeftDrawer,
             changePage,
             expanded: ref(false),
         };
@@ -154,9 +149,4 @@ export default {
 .icon
     width: 24px
     height: 24px
-.like
-    fill:red
-
-.not-liked
-    fill: black
 </style>

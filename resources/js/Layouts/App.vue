@@ -46,7 +46,9 @@
                             icon="book"
                             label="Listar Quadrinhos"
                             :class="[
-                                $page.url === '/NuvetoMarvel/public/comics'
+                                $page.url.startsWith(
+                                    '/NuvetoMarvel/public/comics'
+                                )
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"
@@ -56,7 +58,9 @@
                             icon="star"
                             label="Listar Personagens"
                             :class="[
-                                $page.url === '/NuvetoMarvel/public/characters'
+                                $page.url.startsWith(
+                                    '/NuvetoMarvel/public/characters'
+                                )
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"
@@ -67,7 +71,9 @@
                             label="Meus favoritos"
                             v-if="$page.props.auth"
                             :class="[
-                                $page.url === '/NuvetoMarvel/public/favorites'
+                                $page.url.startsWith(
+                                    '/NuvetoMarvel/public/favorites'
+                                )
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"

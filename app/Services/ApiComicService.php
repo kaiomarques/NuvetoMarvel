@@ -51,7 +51,7 @@ class ApiComicService implements ApiComicsInterface
 
     public function getAllComics($limit = 21, $offset = 0)
     {
-        $cacheKey = 'comics_' . $limit . '_' . $offset;
+        $cacheKey = 'comics1_' . $limit . '_' . $offset;
         $cacheItem = $this->cache->getItem($cacheKey);
 
         if (!$cacheItem->isHit()) {
@@ -70,7 +70,7 @@ class ApiComicService implements ApiComicsInterface
                 throw new \RuntimeException('Resposta da API da Marvel não contém resultados de quadrinhos.');
             }
 
-            $comics = $responseData['data']['results'];
+            $comics = $responseData['data'];
 
             $cacheItem->set($comics);
             $cacheItem->expiresAfter(3600); // Tempo de vida do cache: 1 hora
@@ -124,9 +124,12 @@ class ApiComicService implements ApiComicsInterface
 
     protected function mapComics($comics)
     {
-        return array_map(function ($comic) {
+        $dados = array_map(function ($comic) {
             return $this->mapComic($comic);
-        }, $comics);
+        }, $comics['results']);
+
+        $resultado = array("dados" => $dados,"total" => $comics['total']);
+        return $resultado;
     }
 
     private function urlImage($comic) {

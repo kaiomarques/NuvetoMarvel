@@ -83,15 +83,18 @@
         <!------------------------------ -->
         <!------------------------------ -->
         <!------------------------------ -->
-        <div class="q-pa-lg">
-            <div class="q-gutter-md">
-                <q-pagination
-                    v-model="current"
-                    :max="5"
-                    direction-links
-                    @click="changePage"
-                />
-            </div>
+
+        <div class="q-pa-lg flex flex-center">
+            <q-pagination
+                v-model="current"
+                :max="totalPages"
+                :max-pages="5"
+                :ellipses="false"
+                :boundary-numbers="false"
+                direction-links
+                boundary-links
+                @click="changePage"
+            />
         </div>
         <!------------------------------ -->
         <!------------------------------ -->
@@ -120,10 +123,10 @@ export default {
             );
         },
     },
-    props: ["comics", "page"],
+    props: ["comics", "currentPage", "totalPages"],
     setup(props) {
         const leftDrawerOpen = ref(false);
-        const current = ref(parseInt(props.page)); // Definindo a variável current com o valor de props.page
+        const current = ref(parseInt(props.currentPage)); // Definindo a variável current com o valor de props.page
 
         //console.log(props.page);
 

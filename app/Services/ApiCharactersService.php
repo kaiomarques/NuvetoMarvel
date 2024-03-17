@@ -51,7 +51,7 @@ class ApiCharactersService implements ApiCharactersInterface
 
     public function getAllCharacters($limit = 21, $offset = 0)
     {
-        $cacheKey = 'character_' . $limit . '_' . $offset;
+        $cacheKey = 'character1_' . $limit . '_' . $offset;
         $cacheItem = $this->cache->getItem($cacheKey);
 
         if (!$cacheItem->isHit()) {
@@ -69,7 +69,7 @@ class ApiCharactersService implements ApiCharactersInterface
                 throw new \RuntimeException('Resposta da API da Marvel não contém resultados de personagens.');
             }
 
-            $characters = $responseData['data']['results'];
+            $characters = $responseData['data'];
 
             $cacheItem->set($characters);
             $cacheItem->expiresAfter(3600); // Tempo de vida do cache: 1 hora
@@ -122,9 +122,12 @@ class ApiCharactersService implements ApiCharactersInterface
 
     protected function mapCharacters($characters)
     {
-        return array_map(function ($character) {
+        $dados = array_map(function ($character) {
             return $this->mapCharacter($character);
-        }, $characters);
+        }, $characters['results']);
+
+        $resultado = array("dados" => $dados,"total" => $characters['total']);
+        return $resultado;
     }
 
     private function urlImage($character) {

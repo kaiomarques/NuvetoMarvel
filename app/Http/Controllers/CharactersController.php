@@ -7,28 +7,37 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 use App\Services\ApiCharactersService;
+use App\Library\PaginationTrait;
 use Session;
 
 class CharactersController extends Controller
 {
-    protected $chractersService;
+    use PaginationTrait;
 
-    private $urlAutenticada = '';
+    const REGISTROS_PAGINA = 21;
 
-    function __construct(ApiCharactersService $chractersService) {
-        $this->chractersService = $chractersService;
+    protected $charactersService;
+
+    function __construct(ApiCharactersService $charactersService) {
+        $this->charactersService = $charactersService;
     }
 
     public function index(Request $request) {
-        $page = $request->input('page') ?? 1;
-        $limit = 21;
-        $offset = ($page - 1) * $limit;
-
         try {
-            $chracters = $this->chractersService->getAllCharacters($limit, $offset);
-            return Inertia::render("Characters", ['characters' => $chracters, 'page' => $page] );
+            $currentPage = $request->input('page') ?? 1;
+
+            $characters = $this->charactersService->getAllCharacters($this->limit(), $this->offset($currentPage, self::REGISTROS_PAGINA));
+
+            return Inertia::render("Characters", [
+                'characters' => $characters["dados"], 
+                'totalPages' => $this->totalPages($characters["total"], self::REGISTROS_PAGINA), 
+                'currentPage' => $currentPage] );
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao buscar personagens: ' . $e->getMessage()], 500);
         }
+    }
+
+    private function limit() {
+        return self::REGISTROS_PAGINA;
     }
 }
