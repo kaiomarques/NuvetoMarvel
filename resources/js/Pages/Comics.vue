@@ -28,6 +28,7 @@
                     <div
                         class="like-container cursor-pointer"
                         @click="toogleLike(comic.id)"
+                        v-if="$page.props.auth"
                     >
                         <svg
                             class="not-liked svg-icon icon"
