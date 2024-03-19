@@ -35,9 +35,7 @@
                 </div>
                 <div class="campos">
                     <div>
-                        <a href="/NuvetoMarvel/public/register">
-                            Cadastrar usuário</a
-                        >
+                        <a href="/register"> Cadastrar usuário</a>
                     </div>
                 </div>
             </form>

@@ -26,7 +26,7 @@
                 "
                 >{{ $page.props.errors.error }}</span
             >
-            <form method="post" action="/NuvetoMarvel/public/register/store">
+            <form method="post" action="/register/store">
                 <input
                     type="hidden"
                     name="_token"

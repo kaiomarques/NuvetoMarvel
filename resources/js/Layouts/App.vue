@@ -32,7 +32,7 @@
                             {{ $page.props.auth.lastname }}
                         </div>
                         <q-route-tab
-                            href="/NuvetoMarvel/public/logout"
+                            href="/logout"
                             icon="logout"
                             label="Logout"
                             class="q-ml-xl"
@@ -42,38 +42,32 @@
                     <q-space />
                     <q-tabs v-model="tab" shrink stretch>
                         <q-route-tab
-                            href="/NuvetoMarvel/public/comics"
+                            href="/comics"
                             icon="book"
                             label="Listar Quadrinhos"
                             :class="[
-                                $page.url.startsWith(
-                                    '/NuvetoMarvel/public/comics'
-                                )
+                                $page.url.startsWith('/comics')
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"
                         />
                         <q-route-tab
-                            href="/NuvetoMarvel/public/characters"
+                            href="/characters"
                             icon="star"
                             label="Listar Personagens"
                             :class="[
-                                $page.url.startsWith(
-                                    '/NuvetoMarvel/public/characters'
-                                )
+                                $page.url.startsWith('/characters')
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"
                         />
                         <q-route-tab
-                            href="/NuvetoMarvel/public/favorites"
+                            href="/favorites"
                             icon="hearts"
                             label="Meus favoritos"
                             v-if="$page.props.auth"
                             :class="[
-                                $page.url.startsWith(
-                                    '/NuvetoMarvel/public/favorites'
-                                )
+                                $page.url.startsWith('/favorites')
                                     ? 'bg-red text-white shadow-2'
                                     : '',
                             ]"
