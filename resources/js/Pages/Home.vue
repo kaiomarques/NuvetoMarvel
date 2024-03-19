@@ -3,8 +3,37 @@
         <div class="login-container" v-if="!$page.props.auth">
             <div class="campos left">
                 <h2>Login</h2>
+                <span
+                    v-if="$page.props.success == 'true'"
+                    style="
+                        padding: 10px;
+                        margin: 10px;
+                        display: flex;
+                        border-radius: 10px;
+                        background-color: #86f99a;
+                        color: #168126;
+                    "
+                    >{{ $page.props.message }}</span
+                >
+                <span
+                    v-if="$page.props.success == 'false'"
+                    style="
+                        padding: 10px;
+                        margin: 10px;
+                        display: flex;
+                        border-radius: 10px;
+                        background-color: #ff919f;
+                        color: #81162b;
+                    "
+                    >{{ $page.props.message }}</span
+                >
             </div>
-            <form action="">
+            <form action="auth" method="post">
+                <input
+                    type="hidden"
+                    name="_token"
+                    :value="this.$page.props.csrf_token"
+                />
                 <div class="campos">
                     <div>
                         <input
@@ -15,7 +44,7 @@
                     </div>
                     <div>
                         <input
-                            type="text"
+                            type="password"
                             placeholder="Your password"
                             name="password"
                         />

@@ -16,7 +16,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-
         try {
             $request->validate([
                 'firstname'  => 'required',
@@ -33,27 +32,31 @@ class UserController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->validator->errors()->toArray();
             $request->flash();
-            return redirect()->route('register')->withErrors($errors);
+            //return redirect()->route('register')->withErrors($errors);
+            return redirect()->route('register')
+            ->withErrors($errors)
+                ->with(['success' => 'false', 'message' => 'Erros de validação']);
         }
     
         $user = User::where('email', $request->input('email'))->first();
     
-        if ($user && $user->password != '') {
-            return redirect()->route('register')->withErrors(['error' => 'Esse usuário já existe']);
+        if($user) {
+            if ($user->password != '') {
+                return redirect()->route('register')
+                    ->with(['success' => 'false', 'message' => 'Esse usuário já existe']);
+            }
+            $user->update(["password" => md5($request->input('password'))]);
+        } else {
+            $user = new User;
+            $user->firstname  = $request->input('firstname');
+            $user->lastname   = $request->input('lastname');
+            $user->email      = $request->input('email');
+            $user->password   = md5($request->input('password'));
+        
+            $user->save();
         }
     
-        if ($user && !password_verify($request->input('password'), $user->password)) {
-            return redirect()->route('register')->withErrors(['error' => 'Email or password invalid']);
-        }
-    
-        $user = new User;
-        $user->firstname  = $request->input('firstname');
-        $user->lastname   = $request->input('lastname');
-        $user->email      = $request->input('email');
-        $user->password   = md5($request->input('password'));
-    
-        $user->save();
-    
-        return redirect()->route('register')->withSuccess('Cadastro realizado com sucesso');
+        return redirect()->route('register')
+            ->with(['success' => 'true', 'message' => 'Cadastro realizado com sucesso']);
     }
 }

@@ -3,7 +3,7 @@
         <div class="container">
             <h3>Cadastro</h3>
             <span
-                v-if="$page.props.success"
+                v-if="$page.props.success == 'true'"
                 style="
                     padding: 10px;
                     margin: 10px;
@@ -12,10 +12,10 @@
                     background-color: #86f99a;
                     color: #168126;
                 "
-                >{{ $page.props.success }}</span
+                >{{ $page.props.message }}</span
             >
             <span
-                v-if="$page.props.errors.error"
+                v-if="$page.props.success == 'false'"
                 style="
                     padding: 10px;
                     margin: 10px;
@@ -24,7 +24,7 @@
                     background-color: #ff919f;
                     color: #81162b;
                 "
-                >{{ $page.props.errors.error }}</span
+                >{{ $page.props.message }}</span
             >
             <form method="post" action="/register/store">
                 <input

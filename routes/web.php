@@ -18,6 +18,7 @@ use Inertia\Inertia;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 
 Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+Route::post('/auth', [App\Http\Controllers\LoginController::class, 'auth'])->name('auth');
 Route::get('/googleAuth', [App\Http\Controllers\LoginController::class, 'googleAuth'])->name('googleAuth');
 
 Route::get('/register', [App\Http\Controllers\UserController::class, 'register'])->name("register");

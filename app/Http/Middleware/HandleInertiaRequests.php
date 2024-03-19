@@ -41,7 +41,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => Auth::user(),
             'csrf_token' => csrf_token(),
             'old_input' => session()->get("_old_input"),
-            'success' => session()->get("success")
+            'success' => session()->get("success"),
+            'message' => session()->get("message")
         ]);
     }
 }
