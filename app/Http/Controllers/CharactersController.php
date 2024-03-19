@@ -31,11 +31,13 @@ class CharactersController extends Controller
                 $this->offset($currentPage, self::REGISTROS_PAGINA)
             );
 
-            return Inertia::render("Characters", [
+            return Inertia::render(
+                "Characters", [
                 'characters' => $characters["dados"], 
                 'totalPages' => $this->totalPages($characters["total"], self::REGISTROS_PAGINA), 
                 'currentPage' => $currentPage
-            ]);
+                ]
+            );
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao buscar personagens: ' . $e->getMessage()], 500);
         }

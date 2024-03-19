@@ -37,16 +37,20 @@ class FavoritesController extends Controller
         $favoriteComicsData = $this->filterFavorites($comics['dados'], $favoriteComics);
         $favoriteCharactersData = $this->filterFavorites($characters['dados'], $favoriteCharacters);
 
-        return Inertia::render("Favorites", [
+        return Inertia::render(
+            "Favorites", [
             "favoriteComics" => $favoriteComicsData,
             "favoriteCharacters" => $favoriteCharactersData
-        ]);
+            ]
+        );
     }
 
     private function filterFavorites($data, $favoriteIds)
     {
-        return array_filter($data, function ($item) use ($favoriteIds) {
-            return in_array($item['id'], $favoriteIds);
-        });
+        return array_filter(
+            $data, function ($item) use ($favoriteIds) {
+                return in_array($item['id'], $favoriteIds);
+            }
+        );
     }
 }

@@ -55,9 +55,11 @@ class ApiCharactersService extends ApiServiceBase implements ApiCharactersInterf
 
     protected function mapCharacters($characters)
     {
-        $dados = array_map(function ($character) {
-            return $this->mapCharacter($character);
-        }, $characters['data']['results']);
+        $dados = array_map(
+            function ($character) {
+                return $this->mapCharacter($character);
+            }, $characters['data']['results']
+        );
 
         $resultado = array("dados" => $dados, "total" => $characters['data']['total']);
         return $resultado;

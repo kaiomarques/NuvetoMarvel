@@ -56,9 +56,11 @@ class ApiComicService extends ApiServiceBase implements ApiComicsInterface
 
     protected function mapComics($comics)
     {
-        $dados = array_map(function ($comic) {
-            return $this->mapComic($comic);
-        }, $comics["data"]['results']);
+        $dados = array_map(
+            function ($comic) {
+                return $this->mapComic($comic);
+            }, $comics["data"]['results']
+        );
 
         $resultado = array("dados" => $dados, "total" => $comics['data']['total']);
         return $resultado;

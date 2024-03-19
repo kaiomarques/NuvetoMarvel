@@ -30,11 +30,13 @@ class ComicsController extends Controller
                 $this->offset($currentPage, self::REGISTROS_PAGINA)
             );
             
-            return Inertia::render("Comics", [
+            return Inertia::render(
+                "Comics", [
                 'comics' => $comics["dados"], 
                 'totalPages' => $this->totalPages($comics["total"], self::REGISTROS_PAGINA), 
                 'currentPage' => $currentPage
-            ]);
+                ]
+            );
         } catch (\Exception $e) {
             return response()->json(['error' => 'Erro ao buscar quadrinhos: ' . $e->getMessage()], 500);
         }

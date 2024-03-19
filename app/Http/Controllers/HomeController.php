@@ -20,9 +20,11 @@ class HomeController extends Controller
         
         $auth = Auth::user();
 
-        return Inertia::render('Home', [
+        return Inertia::render(
+            'Home', [
             'authUrl' => optional($googleClient)->generateLink(),
             'auth' => $auth
-        ]);
+            ]
+        );
     }
 }

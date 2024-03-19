@@ -16,18 +16,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->validate([
+            $request->validate(
+                [
                 'firstname' => 'required',
                 'lastname' => 'required',
                 'email' => 'required|email',
                 'password' => 'required'
-            ], [
+                ], [
                 'firstname.required' => 'O campo "nome" é obrigatório',
                 'lastname.required' => 'O campo "sobrenome" é obrigatório',
                 'email.required' => 'O campo "email" é obrigatório',
                 'email.email' => 'Esse campo tem que ter um email válido',
                 'password.required' => 'O campo "password" é obrigatório'
-            ]);
+                ]
+            );
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->validator->errors()->toArray();
             $request->flash();
