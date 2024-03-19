@@ -22,7 +22,7 @@ class GoogleClient
         $this->client->setHttpClient($guzzleClient);
         $this->client->setClientId(config('app.google_client_id'));
         $this->client->setClientSecret(config('app.google_client_secret'));
-        $this->client->setRedirectUri(config('app.asset_url').'/googleAuth');
+        $this->client->setRedirectUri(config('app.asset_url').'googleAuth');
         $this->client->addScope('email');
         $this->client->addScope('profile');
     }
