@@ -45,8 +45,9 @@ class ApiCharactersService extends ApiServiceBase implements ApiCharactersInterf
 
     private function getLike($character)
     {
-        if (!Auth::check())
+        if (!Auth::check()) {
             return false;
+        }
 
         $like = FavoriteCharacters::where(['id_character' => $character["id"], "id_usuario" => Auth::user()->id])->exists();
         return ($like) ? true : false;

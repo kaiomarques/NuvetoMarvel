@@ -46,8 +46,9 @@ class ApiComicService extends ApiServiceBase implements ApiComicsInterface
 
     private function getLike($comic)
     {
-        if (!Auth::check())
+        if (!Auth::check()) {
             return false;
+        }
 
         $like = FavoriteComics::where(['id_comic' => $comic["id"], "id_usuario" => Auth::user()->id])->exists();
         return ($like) ? true : false;
