@@ -15,7 +15,6 @@ class HomeController extends Controller
         $googleClient->init();
         
         $auth = (Auth::user())?Auth::user():null;
-        var_dump($googleClient->generateLink(), $auth);die;
 
         return Inertia('Home', ['authUrl' => $googleClient->generateLink(), "auth" => $auth]);
     }
