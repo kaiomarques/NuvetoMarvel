@@ -50,7 +50,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => $DATABASE_URL["host"],
             'port' => $DATABASE_URL["port"],
-            'database' => $DATABASE_URL["path"]."/",
+            'database' => ltrim($DATABASE_URL["path"],"/"),
             'username' => $DATABASE_URL["user"],
             'password' => $DATABASE_URL["password"],
             'unix_socket' => env('DB_SOCKET', ''),
