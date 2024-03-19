@@ -4,6 +4,8 @@
 
 ## Sobre
 
+Aplicação de teste com login, crud e acesso a API da marvel para listar personagens, quadrinhos e fazer uma lista de favoritos deles.
+
 ## Funcionalidades do projeto
 
 -   [x] Tela inicial e login
