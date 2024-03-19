@@ -10,7 +10,6 @@ Use Session;
 class UserController extends Controller
 {
     public function register() {
-      //print_r(session()->get("request"));die;
       return Inertia::render("Register");
     }
 

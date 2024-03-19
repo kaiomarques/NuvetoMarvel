@@ -11,8 +11,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $googleClient = new GoogleClient;
-        $googleClient->init();
+        if(config('app.api_public_key') && config('app.api_private_key')) {
+            $googleClient = new GoogleClient;
+            $googleClient->init();    
+        }
         
         $auth = (Auth::user())?Auth::user():null;
 
