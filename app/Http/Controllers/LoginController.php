@@ -6,16 +6,17 @@ use App\Library\Authenticate;
 use App\Library\GoogleClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthenticationException;
 use Inertia\Inertia;
-Use Session;
-use App\Model\User;
+use App\Models\User;
 
 class LoginController extends Controller
 {
     private $googleClient;
     private $authenticate;
 
-    function __construct(Authenticate $authenticate, GoogleClient $googleClient) {
+    public function __construct(Authenticate $authenticate, GoogleClient $googleClient)
+    {
         $this->authenticate = $authenticate;
         $this->googleClient = $googleClient;
 
@@ -30,15 +31,11 @@ class LoginController extends Controller
 
             $this->authenticate->auth($email, $password);
 
-            return redirect()->route('index')
-            ->with(['success' => 'success']);
-            //return Inertia::render('Home', ['success' => 'true']);
+            return redirect()->route('index')->with(['success' => 'success']);
         } catch (AuthenticationException $e) {
-            return redirect()->route('index')
-            ->with(['success' => 'false', 'message' => $e->getMessage()]);
+            return redirect()->route('index')->with(['success' => 'false', 'message' => $e->getMessage()]);
         } catch (\Exception $e) {
-            return redirect()->route('index')
-                ->with(['success' => 'false', 'message' => $e->getMessage()]);
+            return redirect()->route('index')->with(['success' => 'false', 'message' => $e->getMessage()]);
         }
     }
 
@@ -50,9 +47,9 @@ class LoginController extends Controller
         return Inertia::render('Home', ['authUrl' => $this->googleClient->generateLink()]);
     }
 
-    public function logout() {
+    public function logout()
+    {
         $this->authenticate->logout();
         return redirect('/');
     }
-
 }

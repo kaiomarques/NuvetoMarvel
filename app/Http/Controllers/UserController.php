@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
-Use Session;
 
 class UserController extends Controller
 {
-    public function register() {
-      return Inertia::render("Register");
+    public function register()
+    {
+        return Inertia::render("Register");
     }
 
     public function store(Request $request)
     {
         try {
             $request->validate([
-                'firstname'  => 'required',
-                'lastname'  => 'required',
+                'firstname' => 'required',
+                'lastname' => 'required',
                 'email' => 'required|email',
                 'password' => 'required'
             ], [
@@ -31,15 +31,14 @@ class UserController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             $errors = $e->validator->errors()->toArray();
             $request->flash();
-            //return redirect()->route('register')->withErrors($errors);
             return redirect()->route('register')
-            ->withErrors($errors)
+                ->withErrors($errors)
                 ->with(['success' => 'false', 'message' => 'Erros de validação']);
         }
-    
+
         $user = User::where('email', $request->input('email'))->first();
-    
-        if($user) {
+
+        if ($user) {
             if ($user->password != '') {
                 return redirect()->route('register')
                     ->with(['success' => 'false', 'message' => 'Esse usuário já existe']);
@@ -51,10 +50,10 @@ class UserController extends Controller
             $user->lastname   = $request->input('lastname');
             $user->email      = $request->input('email');
             $user->password   = md5($request->input('password'));
-        
+
             $user->save();
         }
-    
+
         return redirect()->route('register')
             ->with(['success' => 'true', 'message' => 'Cadastro realizado com sucesso']);
     }

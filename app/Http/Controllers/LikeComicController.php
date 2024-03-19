@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\AuthenticationException;
 use App\Models\FavoriteComics;
+use Exception;
 
 class LikeComicController extends Controller
 {
@@ -28,9 +30,9 @@ class LikeComicController extends Controller
             }
             return redirect()->back();
 
-        } catch (\Illuminate\Auth\AuthenticationException $exception) {
+        } catch (AuthenticationException $exception) {
             return response()->json(['error' => $exception->getMessage()], 401);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return response()->json(['error' => 'Ocorreu um erro inesperado.', 'message'=>$exception->getMessage()], 500);
         }
     }

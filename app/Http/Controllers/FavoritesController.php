@@ -15,38 +15,36 @@ class FavoritesController extends Controller
     protected $comicService;
     protected $charactersService;
 
-    function __construct(ApiComicService $comicService, ApiCharactersService $charactersService) {
-        $this->comicService         = $comicService;
-        $this->charactersService    = $charactersService;
+    public function __construct(ApiComicService $comicService, ApiCharactersService $charactersService)
+    {
+        $this->comicService = $comicService;
+        $this->charactersService = $charactersService;
     }
 
-    public function index() {
-
-        $favoriteComics = 
-            FavoriteComics::where(['id_usuario' => Auth::user()->id])
-                ->pluck('id_comic')
-                ->toArray();
-        $favoriteCharacters = 
-            FavoriteCharacters::where(['id_usuario' => Auth::user()->id])
-                ->pluck('id_character')
-                ->toArray();
+    public function index()
+    {
+        $favoriteComics = FavoriteComics::where('id_usuario', Auth::user()->id)
+            ->pluck('id_comic')
+            ->toArray();
+        
+        $favoriteCharacters = FavoriteCharacters::where('id_usuario', Auth::user()->id)
+            ->pluck('id_character')
+            ->toArray();
 
         $comics = $this->comicService->getAllComics();
         $characters = $this->charactersService->getAllCharacters();
 
         $favoriteComicsData = $this->filterFavorites($comics['dados'], $favoriteComics);
-
         $favoriteCharactersData = $this->filterFavorites($characters['dados'], $favoriteCharacters);
 
-        return Inertia::render("Favorites", 
-            [
-                "favoriteComics" => $favoriteComicsData,
-                "favoriteCharacters" => $favoriteCharactersData
-            ]
-        );
+        return Inertia::render("Favorites", [
+            "favoriteComics" => $favoriteComicsData,
+            "favoriteCharacters" => $favoriteCharactersData
+        ]);
     }
 
-    private function filterFavorites($data, $favoriteIds) {
+    private function filterFavorites($data, $favoriteIds)
+    {
         return array_filter($data, function ($item) use ($favoriteIds) {
             return in_array($item['id'], $favoriteIds);
         });
