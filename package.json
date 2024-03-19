@@ -3,8 +3,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "production": "vite build"
+        "build": "vite build"
     },
     "devDependencies": {
         "@quasar/vite-plugin": "^1.6.0",
