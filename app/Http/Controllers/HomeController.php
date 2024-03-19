@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Library\Authenticate;
-use App\Library\GoogleCLient;
+use App\Library\GoogleClient;
 use Session;
 use Illuminate\Support\Facades\Auth;
 
