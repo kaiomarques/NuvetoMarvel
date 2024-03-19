@@ -4,10 +4,7 @@
 
 ## Sobre
 
--   <a href="#-tecnologias">Funcionalidades do Projeto</a>
--   <a href="#-tecnologias">Tecnologias utilizadas</a>
--   <a href="#-tecnologias">Camadas de Arquiteturas</a>
--   <a href="#-tecnologias">Passos de instalação</a>
+Aplicação de teste com login, crud e acesso a API da marvel para listar personagens, quadrinhos e fazer uma lista de favoritos deles.
 
 ## Funcionalidades do projeto
 
@@ -68,3 +65,7 @@ Migrations contidos no projeto são necessários os comandos abaixo para tornar 
 ```
 SET GLOBAL innodb_file_format = Barracuda; SET GLOBAL innodb_file_per_table = ON; SET GLOBAL innodb_large_prefix = ON; SET GLOBAL innodb_default_row_format = 'DYNAMIC';
 ```
+
+## Autor
+
+Kaio Luiz Marques
