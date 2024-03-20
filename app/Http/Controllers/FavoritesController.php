@@ -58,32 +58,36 @@ class FavoritesController extends Controller
      */    
     public function index()
     {
-        $favoriteComics = FavoriteComics::where('id_usuario', Auth::user()->id)
-            ->pluck('id_comic')
-            ->toArray();
-        
-        $favoriteCharacters = FavoriteCharacters::where(
-            'id_usuario', Auth::user()->id
-        )
-            ->pluck('id_character')
-            ->toArray();
+        try{
+            $favoriteComics = FavoriteComics::where('id_usuario', Auth::user()->id)
+                ->pluck('id_comic')
+                ->toArray();
+            
+            $favoriteCharacters = FavoriteCharacters::where(
+                'id_usuario', Auth::user()->id
+            )
+                ->pluck('id_character')
+                ->toArray();
 
-        $comics = $this->comicService->getAllComics();
-        $characters = $this->charactersService->getAllCharacters();
+            $comics = $this->comicService->getAllComics();
+            $characters = $this->charactersService->getAllCharacters();
 
-        $favoriteComicsData = $this->_filterFavorites(
-            $comics['dados'], $favoriteComics
-        );
-        $favoriteCharactersData = $this->_filterFavorites(
-            $characters['dados'], $favoriteCharacters
-        );
+            $favoriteComicsData = $this->_filterFavorites(
+                $comics['dados'], $favoriteComics
+            );
+            $favoriteCharactersData = $this->_filterFavorites(
+                $characters['dados'], $favoriteCharacters
+            );
 
-        return Inertia::render(
-            "Favorites", [
-            "favoriteComics" => $favoriteComicsData,
-            "favoriteCharacters" => $favoriteCharactersData
-            ]
-        );
+            return Inertia::render(
+                "Favorites", [
+                "favoriteComics" => $favoriteComicsData,
+                "favoriteCharacters" => $favoriteCharactersData
+                ]
+            );
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erro ao buscar favoritos: ' . $e->getMessage()], 500);
+        }
     }
 
     /**
