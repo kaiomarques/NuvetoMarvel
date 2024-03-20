@@ -1,18 +1,51 @@
 <?php
-
+/**
+ * Controller que utilizado para o cadastro e registro
+ * do usuário do sistema
+ * 
+ * Php version 8.2.0
+ *
+ * @category Controller
+ * @package  App\Controllers
+ * @author   Kaio Luiz Marques <kaiolmarques@gmail.com>
+ * @license  https://opensource.org/license/MIT MIT
+ * @link     https://github.com/kaiomarques/
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 
+/**
+ * Controller que utilizado para o cadastro e registro
+ * do usuário do sistema
+ * 
+ * @category Controller
+ * @package  App\Controllers
+ * @author   Kaio Luiz Marques <kaiolmarques@gmail.com>
+ * @license  https://opensource.org/license/MIT MIT
+ * @link     https://github.com/kaiomarques/
+ */
 class UserController extends Controller
 {
+    /**
+     * Exibe o formulário de registro.
+     *
+     * @return \Inertia\Response
+     */    
     public function register()
     {
         return Inertia::render("Register");
     }
 
+    /**
+     * Processa o formulário de registro.
+     *
+     * @param \Illuminate\Http\Request $request Requisição HTTP.
+     * 
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         try {
@@ -43,7 +76,11 @@ class UserController extends Controller
         if ($user) {
             if ($user->password != '') {
                 return redirect()->route('register')
-                    ->with(['success' => 'false', 'message' => 'Esse usuário já existe']);
+                    ->with(
+                        [
+                        'success' => 'false', 
+                        'message' => 'Esse usuário já existe']
+                    );
             }
             $user->update(["password" => md5($request->input('password'))]);
         } else {
@@ -57,6 +94,10 @@ class UserController extends Controller
         }
 
         return redirect()->route('register')
-            ->with(['success' => 'true', 'message' => 'Cadastro realizado com sucesso']);
+            ->with(
+                [
+                    'success' => 'true',
+                    'message' => 'Cadastro realizado com sucesso']
+            );
     }
 }
