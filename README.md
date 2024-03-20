@@ -32,6 +32,10 @@ As services foram criadas principalmente para se comunicar com a API da marvel, 
 
 Nesse diretório estão classes resposáveis pela autenticação (que pode ser google ou padrão) e uma trait para cuidar da paginação.
 
+### Padrões de código
+
+Os códigos de todas as classes criadas durante o desenvolvimento (Controllers, Services, Libraries) seguem o padrão de formatação PSR-12 e PHPDoc. Utilizamos o serviço de CodeSniffer, PHPCS, para validar esses padrões.
+
 ## Passos de instalação
 
 Após dar clone no repositório é necessário instalar as dependências do composer e do npm, além de estar conectado a um banco.
