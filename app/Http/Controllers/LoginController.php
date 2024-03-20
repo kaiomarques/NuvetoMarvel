@@ -98,7 +98,7 @@ class LoginController extends Controller
     public function googleAuth()
     {
         if ($this->_googleClient->authenticated()) {
-            return $this->_authenticate->authGoogle($this->googleClient->getData());
+            return $this->_authenticate->authGoogle($this->_googleClient->getData());
         }
         return Inertia::render(
             'Home', 
