@@ -69,8 +69,10 @@ class FavoritesController extends Controller
                 ->pluck('id_character')
                 ->toArray();
 
-            $comics = $this->comicService->getAllComics(100,0); //limite de busca na plataforma
-            $characters = $this->charactersService->getAllCharacters(100,0);//limite de busca na plataforma
+            $comics = $this->comicService->getAllComics(100,0); 
+            //limite de busca na plataforma
+            $characters = $this->charactersService->getAllCharacters(100,0);
+            //limite de busca na plataforma
 
             $favoriteComicsData = $this->_filterFavorites(
                 $comics['dados'], $favoriteComics
